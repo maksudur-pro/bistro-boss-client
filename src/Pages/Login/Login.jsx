@@ -8,6 +8,7 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
+import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 
 const Login = () => {
   const [disabled, setDisabled] = useState(true);
@@ -23,21 +24,24 @@ const Login = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
-
-    signIn(email, password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        Swal.fire("Good job!", "User login successful", "success");
-      })
-      .catch((error) => {
-        console.log(error.message);
+    console.log(email, password);
+    signIn(email, password).then((result) => {
+      const user = result.user;
+      console.log(user);
+      Swal.fire({
+        title: "User Login Successful.",
+        showClass: {
+          popup: "animate__animated animate__fadeInDown",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOutUp",
+        },
       });
-    navigate(from, { replace: true });
+      navigate(from, { replace: true });
+    });
   };
 
   const handleValidate = (e) => {
@@ -114,11 +118,12 @@ const Login = () => {
                 />
               </div>
             </form>
-            <p>
+            <p className="text-center">
               <small>
                 New here? <Link to="/signUp">Create an account</Link>
               </small>
             </p>
+            <SocialLogin></SocialLogin>
           </div>
         </div>
       </div>
